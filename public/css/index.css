@@ -1,0 +1,393 @@
+.font-tajawal {
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* Custom Color */
+
+.custom-color {
+    background-color: #862d42;
+}
+
+
+
+/* Search */
+#searchInput:focus::placeholder {
+    color: transparent;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: transparent;
+}
+
+/* Hover Menu */
+.men {
+    margin-right: 10%;
+    margin-left: 100px;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    right: 100%;
+    top: 0;
+}
+
+.menu-item:hover .submenu {
+    display: block;
+}
+
+/* slider */
+
+.swiper-scrollbar {
+    display: none;
+}
+
+.swiper-container-products {
+    overflow: hidden;
+}
+.swiper-container-ProductsContent {
+    overflow: hidden;
+}
+@media only screen and (min-width: 1568px) {
+    .swiper-container-products {
+       margin-left: 9rem;
+       margin-right: 9rem;
+    }
+    .speacehome {
+       margin-left: 9rem;
+       margin-right: 9rem;
+    }
+    .price {
+        font-size: 18px;
+    }
+}
+/* Set the Swiper container to a specific width or make it responsive */
+
+/* offer bar animation */
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Optional: Add a backdrop for the menu */
+#backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    display: none;
+}
+
+#mobileMenu,
+#searchMenu,
+#cartMenu {
+    transform: translateX(100%);
+}
+
+#productFilter {
+    transform: translateY(-100%);
+}
+
+#productSort {
+    transform: translateY(100%);
+}
+
+#searchResultDiv {
+    display: none;
+}
+
+#closeMenuButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.submenu1 {
+    display: none;
+    /* Hide by default */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    /* Add more styling as needed */
+}
+
+/* Custom styles for pagination on small screens */
+@media screen and (max-width: 768px) {
+    .custom-pagination {
+        /* Adjust styles for smaller screens */
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .custom-pagination .previous,
+    .custom-pagination .pages {
+        width: 100%;
+        /* Set width to 100% */
+        margin-bottom: 10px;
+        /* Add some space between elements */
+    }
+
+    .custom-pagination .pages {
+        justify-content: center;
+        /* Center the page numbers */
+    }
+    
+}
+
+/* Hide mobile logo on larger screens */
+.desktop-logo {
+    display: block;
+}
+
+.mobile-logo {
+    display: none;
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 768px) {
+    .desktop-logo {
+        display: none;
+    }
+
+    .mobile-logo {
+        display: block;
+    }
+}
+
+.custom-placeholder::placeholder {
+    /* Align the placeholder to the right */
+    text-align: right;
+    /* Optional: Add additional styling as needed */
+}
+
+.custom-placeholder {
+    /* Align the text in the input field to the left */
+    text-align: left;
+}
+
+#accountMenuContent {
+    display: none;
+    /* Additional styling for the menu */
+}
+
+/* alert code */
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+    background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+    background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+    color: white;
+}
+
+.colored-toast .swal2-close {
+    color: white;
+}
+
+.colored-toast .swal2-html-container {
+    color: white;
+}
+
+.filterDiv,
+.navSubCategory {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* .open_close_FilterDiv_BTN {
+    cursor: pointer;
+    font-size: 1px;
+} */
+
+
+/* Style for the navigation bar when scrolled */
+.nav-scrolled {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    /* Increase if necessary */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 !important;
+}
+
+
+/* Style for blurring the div content */
+.blurEffect {
+    filter: blur(25px);
+    -webkit-filter: blur(25px);
+}
+
+#spinner-overlay.hidden {
+    display: none;
+}
+
+#cart-spinner-overlay.hidden {
+    display: none;
+}
+
+
+
+/* table from order page */
+
+table tr:nth-child(1) {
+    background-color: #862d42;
+    color: white;
+
+}
+
+tr:nth-child(odd) {
+    background-color: #862d4267;
+    /* color: white; */
+
+    background-color: #cfcfcf;
+}
+
+
+
+/* Targeting the nav element directly if it's specifically used for pagination */
+nav.pagination ul,
+.pagination {
+    /* Increasing specificity */
+    background-color: white !important;
+    /* Use !important cautiously */
+}
+
+#cartProductsContainer {
+    max-height: 60vh;
+    overflow-y: auto; /* Force scrollbar visibility */
+}
+
+/* Webkit-specific styles */
+#cartProductsContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  #cartProductsContainer::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  #cartProductsContainer::-webkit-scrollbar-thumb:hover {
+    background: #862d42;
+}
+  #cartProductsContainer::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Standard CSS properties for other browsers */
+  #cartProductsContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #862d42 #f1f1f1;
+
+  }
+
+  .customSpinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 4px solid #0037ff;
+    border-right: 4px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .customSpinner::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-bottom: 4px solid #e84545;
+    border-left: 4px solid transparent;
+  }
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+  }
+  @keyframes l5 {
+      0%  {box-shadow: 20px 0 #000, -20px 0 #0002;background: #000 }
+      33% {box-shadow: 20px 0 #000, -20px 0 #0002;background: #0002}
+      66% {box-shadow: 20px 0 #0002,-20px 0 #000; background: #0002}
+      100%{box-shadow: 20px 0 #0002,-20px 0 #000; background: #000 }
+  }
+
+
+
+  .hover-scale-102:hover {
+    transform: scale(1.02);
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .subCategoryList {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out; /* Optional: for smooth transition */
+}
+
+
+/* Hover Search Product  */
+.PrSearch:hover
+{
+    background-color: #c3c3c3 !important;
+}
+.leading-5{
+    background-color: #862d42 !important; 
+    color: rgb(255 255 255) !important;
+}

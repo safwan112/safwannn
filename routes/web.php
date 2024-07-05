@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\PaymentController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +68,13 @@ Route::get('/privacy-policy', function () {
 Route::get('/terms-of-use', function () {
     return view('terms-of-use');
 });
+Route::get('/exchange-and-return-policy', function () {
+    return view('exchange-and-return-policy');
+});
+Route::get('/Contact-us', function () {
+    return view('Contact-us');
+});
+
 
 Route::get('/products/brand/{brandName}', [ProductController::class, 'showByBrand']);
 Route::get('/brands', [BrandController::class, 'index'])->name('brands');

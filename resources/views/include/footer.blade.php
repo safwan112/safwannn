@@ -23,12 +23,13 @@
         <div class="flex flex-col gap-3">
             <h2 class="font-bold text-lg">الصفحات</h2>
             <hr class="lg:hidden block h-[3px] bg-[#a8a7a7]">
-            <div class="flex  gap-3">
-                <a href="/privacy-policy" class="hover:underline">سياسة الخصوصية</a>
-                <a href="/terms-of-use" class="hover:underline" >شروط الاستخدام</a>
-                <a href="https://maps.app.goo.gl/LF2qN1dgFYUmy6hF7" class="hover:underline" target="_blank">موقع الصيدليه </a>
-                <a href="https://radar-al-dawaa.com/support.html" class="hover:underline" target="_blank">اتصل بنا</a>
-            </div>
+            <ul class="flex flex-wrap gap-3 max-width-container">
+            <li><a href="/privacy-policy" class="hover:underline">سياسة الخصوصية</a></li>
+            <li><a href="/terms-of-use" class="hover:underline">شروط الاستخدام</a></li>
+            <li><a href="https://maps.app.goo.gl/LF2qN1dgFYUmy6hF7" class="hover:underline" target="_blank">موقع الصيدليه</a></li>
+            <li><a href="/Contact-us" class="hover:underline" >اتصل بنا</a></li>
+            <li><a href="/exchange-and-return-policy" class="hover:underline">سياسة الاستبدال والاسترجاع</a></li>
+        </ul>
         </div>
 
         {{-- السوشيال --}}

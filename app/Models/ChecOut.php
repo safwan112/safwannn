@@ -21,6 +21,7 @@ class ChecOut extends Model
         'phone',
         'save',
         'quantity',
+        'status',
         // Add any other fields that should be mass assignable
     ];
 }

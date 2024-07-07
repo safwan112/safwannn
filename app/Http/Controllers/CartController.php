@@ -8,48 +8,48 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-  public function addToCart(Request $request)
-{
-    // Directly access the request data
-    $productId = $request->input('productId');
-    $quantity = $request->input('quantity',1);
+    public function addToCart(Request $request)
+    {
+        // Directly access the request data
+        $productId = $request->input('productId');
+        $quantity = $request->input('quantity', 1);
 
 
-    $userId = Auth::id();
+        $userId = Auth::id();
 
-    // Additional checks can be added here, such as if the product exists in your database
+        // Additional checks can be added here, such as if the product exists in your database
 
-    // Assuming your Cart model or database setup allows for quantities
-    $cartItem = Cart::where('user_id', $userId)->where('product_id', $productId)->first();
+        // Assuming your Cart model or database setup allows for quantities
+        $cartItem = Cart::where('user_id', $userId)->where('product_id', $productId)->first();
 
-    if ($cartItem) {
-        // If the item already exists, update the quantity
-        $cartItem->qte += is_numeric($quantity) && $quantity > 0 ? $quantity : 1;
-        $cartItem->save();
-        return response()->json([
-            'message' => 'Quantity updated successfully!',
-            'cartItem' => $cartItem,
-            'action' => 'updated', // Add this line
-        ]);
+        if ($cartItem) {
+            // If the item already exists, update the quantity
+            $cartItem->qte += is_numeric($quantity) && $quantity > 0 ? $quantity : 1;
+            $cartItem->save();
+            return response()->json([
+                'message' => 'Quantity updated successfully!',
+                'cartItem' => $cartItem,
+                'action' => 'updated', // Add this line
+            ]);
 
 
-    } else {
-        // If not, create a new cart item
-        $cartItem = Cart::create([
-            'product_id' => $productId,
-            'user_id' => $userId,
-            'qte' => (int)$quantity,
-        ]);
+        } else {
+            // If not, create a new cart item
+            $cartItem = Cart::create([
+                'product_id' => $productId,
+                'user_id' => $userId,
+                'qte' => (int)$quantity,
+            ]);
 
-        return response()->json([
-            'message' => 'Product added to cart successfully!',
-            'cartItem' => $cartItem,
-            'action' => 'added', // Add this line
-        ]);
+            return response()->json([
+                'message' => 'Product added to cart successfully!',
+                'cartItem' => $cartItem,
+                'action' => 'added', // Add this line
+            ]);
+
+        }
 
     }
-
-}
 
 
     public function count()
@@ -65,18 +65,18 @@ class CartController extends Controller
         $userId = auth()->id(); // Or however you get the current user's ID
 
         $cartItems = Cart::with('product') // Eager load product details
-                        ->where('user_id', $userId)
-                        ->get()
-                        ->map(function ($item) {
-                            return [
-                                'id' => $item->id,
-                                'product_id' => $item->product_id,
-                                'product_name' => $item->product->title, // Using 'title' from your products table
-                                'product_price' => $item->product->price,
-                                'product_image' => $item->product->image,
-                                'qte' => $item->qte,
-                            ];
-                        });
+        ->where('user_id', $userId)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'product_name' => $item->product->title, // Using 'title' from your products table
+                    'product_price' => $item->product->price,
+                    'product_image' => $item->product->image,
+                    'qte' => $item->qte,
+                ];
+            });
 
         return response()->json($cartItems);
     }
@@ -136,7 +136,8 @@ class CartController extends Controller
     }
 
 
-    function CheckOut(){
+    function CheckOut()
+    {
 
         return view('CheckOut');
     }
@@ -149,5 +150,5 @@ class CartController extends Controller
         return response()->json($cartItems);
     }
 
- 
+
 }

@@ -26,21 +26,21 @@ class ChecOutController extends Controller
         ]);
 
 
-          // Assuming idproducts is a comma-separated string of product IDs like "3,17,16,18,19,23,10,13,11"
-          $idProducts = explode(',', $validated['idproducts']);
-          // Loop through the product IDs and increment the sales column for each
-          foreach ($idProducts as $productId) {
-              // Ensure $productId is a valid number (sanitization)
-              $productId = (int) $productId;
+        // Assuming idproducts is a comma-separated string of product IDs like "3,17,16,18,19,23,10,13,11"
+        $idProducts = explode(',', $validated['idproducts']);
+        // Loop through the product IDs and increment the sales column for each
+        foreach ($idProducts as $productId) {
+            // Ensure $productId is a valid number (sanitization)
+            $productId = (int)$productId;
 
-              $sales = Product::find($productId);
-              $sales->sales += 1 ;
-              $sales->save();
+            $sales = Product::find($productId);
+            $sales->sales += 1;
+            $sales->save();
 
-          }
+        }
 
         // Store in database
-         // Assuming you have all necessary data validated in $validated
+        // Assuming you have all necessary data validated in $validated
         $checkout = new ChecOut(); // Create a new ChecOut instance
 
         // Set properties
@@ -55,15 +55,16 @@ class ChecOutController extends Controller
         $checkout->phone = $validated['phone'];
         $checkout->save = $request->save;
         $checkout->quantity = $request->quantity;
+        $checkout->status = 'pending';
 
         // Save the checkout record to the database
         $checkout->save();
 
-        Cart::where('user_id', auth()->id() )->delete();
+        Cart::where('user_id', auth()->id())->delete();
 
         session()->flash('StoreOrder', 'لقد تم ارسال طلبك بنجاح سنتواصل معك في اقرب وقت !');
         // Redirect or return a response
-         return view('CheckOut');
+        return view('payment')->with(['checkout' => $checkout->getRawOriginal()]);
 
     }
 

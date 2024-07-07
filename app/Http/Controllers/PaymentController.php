@@ -16,16 +16,17 @@ class PaymentController extends Controller
         return view('thanks');
     }
 
-public function callback(Request $request)
-{
-    
-    $status = $request->input('status');
-    if ($status == 'paid') {
-        
-        session()->flash('StoreOrder', 'تم الدفع بنجاح!');
-        return redirect('/Home');
-    } else {
-        
-        return redirect('/CheckOut')->withErrors(['message' => 'فشل في الدفع']);
+    public function callback(Request $request)
+    {
+
+        $status = $request->input('status');
+        if ($status == 'paid') {
+
+            session()->flash('StoreOrder', 'تم الدفع بنجاح!');
+            return redirect('/Home');
+        } else {
+
+            return redirect('/CheckOut')->withErrors(['message' => 'فشل في الدفع']);
+        }
     }
-}}
+}

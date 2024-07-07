@@ -18,7 +18,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    function Index(){
+    function Index()
+    {
         return view('welcome');
     }
 
@@ -89,16 +90,16 @@ class Controller extends BaseController
             return $order;
         });
 
-        return view('MyOrder')->with('ordersWithProducts',$ordersWithProducts);
+        return view('MyOrder')->with('ordersWithProducts', $ordersWithProducts);
     }
 
-   
-     public function logMaxExecutionTime()
+
+    public function logMaxExecutionTime()
     {
         $maxExecutionTime = ini_get('max_execution_time');
         Log::info('Max Execution Time: ' . $maxExecutionTime . ' seconds');
 
-          return response()->json([
+        return response()->json([
             'message' => 'Max Execution Time logged successfully.',
             'max_execution_time' => $maxExecutionTime
         ]);

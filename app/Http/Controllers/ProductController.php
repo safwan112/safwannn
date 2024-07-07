@@ -10,14 +10,14 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ProductController  extends Controller
+class ProductController extends Controller
 {
-    public function Product(Request $request,$title ,$id)
+    public function Product(Request $request, $title, $id)
     {
         // Fetch all products that belong to the category with the given $id
         $products = Product::where('category_id', $id)->paginate(20);
-        $randomCategories = Category::wherenot('id',$id)->inRandomOrder()->limit(5)->get();
-        $randomSubCategories = SubCategory::where('categoryId',$id)->inRandomOrder()->limit(5)->get();
+        $randomCategories = Category::wherenot('id', $id)->inRandomOrder()->limit(5)->get();
+        $randomSubCategories = SubCategory::where('categoryId', $id)->inRandomOrder()->limit(5)->get();
         $categories = Category::with('subcategories')->get();
 
         // Pass the products to the view
@@ -27,26 +27,25 @@ class ProductController  extends Controller
             'randomCategories' => $randomCategories,
             'randomSubCategories' => $randomSubCategories,
             'categories' => $categories,
-            'id'=>$id,
-            'category_id'=>$id,
-            'subcategory_id'=> 0 ,
+            'id' => $id,
+            'category_id' => $id,
+            'subcategory_id' => 0,
 
         ]);
     }
 
 
-
     public function showByBrand($brandName)
     {
-        
+
         $brand = Brand::where('name', $brandName)->first();
 
         if (!$brand) {
-           
+
             abort(404, 'العلامة التجارية غير موجودة');
         }
 
-        
+
         $products = $brand->products()->paginate(10);
 
         $title = $brandName;
@@ -54,21 +53,14 @@ class ProductController  extends Controller
         return view('byBrand', compact('products', 'title'));
     }
 
-    
 
-
-
-
-
-
-
-    public function SubProduct(Request $request,$category,$title ,$id)
+    public function SubProduct(Request $request, $category, $title, $id)
     {
         // Fetch all products that belong to the category with the given $id
         $products = Product::where('subcategory_id', $id)->paginate(20);
         $category_id = SubCategory::where('id', $id)->select('categoryID')->first();
-        $randomCategories = Category::wherenot('id',$id)->inRandomOrder()->limit(5)->get();
-        $randomSubCategories = SubCategory::wherenot('name',$title)->where('categoryId',$id)->inRandomOrder()->limit(5)->get();
+        $randomCategories = Category::wherenot('id', $id)->inRandomOrder()->limit(5)->get();
+        $randomSubCategories = SubCategory::wherenot('name', $title)->where('categoryId', $id)->inRandomOrder()->limit(5)->get();
         $categories = Category::with('subcategories')->get();
 
         // Pass the products to the view
@@ -78,13 +70,14 @@ class ProductController  extends Controller
             'randomCategories' => $randomCategories,
             'randomSubCategories' => $randomSubCategories,
             'categories' => $categories,
-            'category_id'=> $category_id->categoryID,
-            'subcategory_id'=> $id ,
+            'category_id' => $category_id->categoryID,
+            'subcategory_id' => $id,
 
         ]);
     }
 
-    function ProductDetails(Request $request,$title,$id){
+    function ProductDetails(Request $request, $title, $id)
+    {
 
         $products = Product::where('id', $id)->first();
 
@@ -155,12 +148,13 @@ class ProductController  extends Controller
             return back()->with('error', 'حدث خطأ أثناء العملية، الرجاء المحاولة مرة أخرى');
         }
     }
+
     public function StoreSubCategory(Request $request)
     {
         try {
 
             // Check if a category with the given name already exists
-            $existingCategory = SubCategory::where('name', $request->name)->where('categoryId',  $request->category)->first();
+            $existingCategory = SubCategory::where('name', $request->name)->where('categoryId', $request->category)->first();
 
             if ($existingCategory) {
                 // If a category with this name exists, return with an error message
@@ -226,30 +220,30 @@ class ProductController  extends Controller
             return back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
     public function search(Request $request)
     {
         try {
-        $query = $request->input('query');
-        $keywords = explode(' ', $query);
+            $query = $request->input('query');
+            $keywords = explode(' ', $query);
 
-        $products = Product::where(function($q) use ($keywords) {
-            foreach ($keywords as $keyword) {
-                $q->where(function($subQuery) use ($keyword) {
-                    $subQuery->where('title', 'LIKE', "%{$keyword}%")
-                             ->orWhere('description', 'LIKE', "%{$keyword}%");
-                });
-            }
-        })
-        ->limit(12)
-        ->get();
+            $products = Product::where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->where(function ($subQuery) use ($keyword) {
+                        $subQuery->where('title', 'LIKE', "%{$keyword}%")
+                            ->orWhere('description', 'LIKE', "%{$keyword}%");
+                    });
+                }
+            })
+                ->limit(12)
+                ->get();
 
-        $uniqueProducts = $products->unique(function($product) {
-            return $product['title'] . $product['description'];
-        })->values();
+            $uniqueProducts = $products->unique(function ($product) {
+                return $product['title'] . $product['description'];
+            })->values();
 
-        return response()->json($uniqueProducts);
-    }
-         catch (\Exception $e) {
+            return response()->json($uniqueProducts);
+        } catch (\Exception $e) {
             Log::error("Error during product search: " . $e->getMessage());
             return response()->json(['error' => 'Server error'], 500);
         }

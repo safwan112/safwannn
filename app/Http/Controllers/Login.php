@@ -27,6 +27,7 @@ class Login extends Controller
         $categories = Category::all();
         return view('ResetPassword', compact('categories'));
     }
+
     function SetNewPassword($token)
     {
         // Attempt to find the token in the database
@@ -71,7 +72,7 @@ class Login extends Controller
             // Validate the request
             $validatedData = $request->validate([
                 'fullName' => 'required|string|max:255',
-                
+
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required',
             ]);
@@ -79,7 +80,7 @@ class Login extends Controller
 
             $user = new User();
             $user->fullName = $validatedData['fullName'];
-            
+
             $user->email = $validatedData['email'];
             $user->password = Hash::make($validatedData['password']);
             $user->save();
@@ -215,5 +216,5 @@ class Login extends Controller
         // Redirect the user with a success message
         return redirect('/')->with('success', 'تم إعادة تعيين كلمة المرور  بنجاح .');
     }
-    
+
 }

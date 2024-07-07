@@ -6,8 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "backpack/crud": "^6.7",
-        "backpack/theme-tabler": "^1.2",
         "fabpot/goutte": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -16,7 +14,6 @@
         "spatie/browsershot": "^3.61"
     },
     "require-dev": {
-        "backpack/generators": "^4.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",

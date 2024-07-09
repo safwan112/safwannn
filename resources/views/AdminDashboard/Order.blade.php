@@ -2,59 +2,44 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- plugins:css -->
     @include('AdminDashboard/include/link')
 
 </head>
 
-
-<body style="  font-family: 'Tajawal', sans-serif;">
+<body style="font-family: 'Tajawal', sans-serif;">
     <div class="container-scroller">
-        <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div
-                class="text-left navbar-brand-wrapper d-flex align-items-center justify-content-center font-bold text-2xl">
+            <div class="text-left navbar-brand-wrapper d-flex align-items-center justify-content-center font-bold text-2xl">
                 <a href="/Home">
-                    <p>
-                    Gheom.shop || غيوم.شوب
-                    </p>
+                    <p>Gheom.shop || غيوم.شوب</p>
                 </a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
-                <ul class="navbar-nav mr-lg-2">
-
-                </ul>
+                <ul class="navbar-nav mr-lg-2"></ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item dropdown">
-
-                    </li>
+                    <li class="nav-item dropdown"></li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                             <img src="{{ asset('img/log.png') }}" alt="profile" />
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                            aria-labelledby="profileDropdown">
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href='/Logout'>
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
+                                <i class="ti-power-off text-primary"></i> Logout
                             </a>
                         </div>
                     </li>
                 </ul>
             </div>
         </nav>
-        <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_settings-panel.html -->
             <div class="theme-setting-wrapper">
                 <div id="settings-trigger"><i class="ti-settings"></i></div>
                 <div id="theme-settings" class="settings-panel">
@@ -81,42 +66,40 @@
                 <i class="settings-close ti-close"></i>
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
-                            aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
-                            aria-controls="chats-section">CHATS</a>
+                        <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
                     </li>
                 </ul>
             </div>
-            <!-- partial -->
-            <!-- partial:partials/_sidebar.html -->
             @include('AdminDashboard/include/nav')
-
-            <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="col-lg-12 grid-margin stretch-card text-right" dir="rtl">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">جميع الطلبات </h4>
+                                <div class="mb-4">
+                                    <input type="text" id="orderSearchInput" placeholder="ابحث برقم الطلب" class="form-control text-right" dir="rtl">
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th> الاسم كامل</th>
+                                                <th>الاسم كامل</th>
                                                 <th>العنوان</th>
                                                 <th>المدينة</th>
                                                 <th>الرقم البريدي</th>
-                                                <th> الهاتف</th>
-                                                <th> المنتجات</th>
-                                                <th> مبلغ الطلبية</th>
-                                                <th> الحالة</th>
-                                                <th> تاريخ الطلب </th>
+                                                <th>الهاتف</th>
+                                                <th>المنتجات</th>
+                                                <th>مبلغ الطلبية</th>
+                                                <th>رقم الطلب</th>
+                                                <th>الحاله </th>
+                                                <th>تاريخ الطلب</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="ordersTableBody">
                                             @foreach ($ordersWithProducts as $order)
                                                 <tr>
                                                     <td>{{ $order->firstname }} {{ $order->secoundname }}</td>
@@ -125,90 +108,65 @@
                                                     <td>{{ $order->postalcode }}</td>
                                                     <td>{{ $order->phone }}</td>
                                                     <td>
-                                                        <!-- Trigger/Open Modal Button -->
-                                                        <button class="modal-open"
-                                                            data-modal-target="#custom-modal-{{ $order->id }}">
-                                                            <label class="badge badge-success cursor-pointer">
-                                                                مشاهدة
-                                                            </label>
+                                                        <button class="modal-open" data-modal-target="#custom-modal-{{ $order->id }}">
+                                                            <label class="badge badge-success cursor-pointer">مشاهدة</label>
                                                         </button>
                                                     </td>
                                                     <td>{{ $order->price }} SAR</td>
-                                                    <td></td>
+                                                    <td class="order-id">{{ $order->id }}</td>
+                                                    <td class="order-status {{ $order->status == 'paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">{{ $order->status }}</td>
                                                     <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-
                                                 </tr>
-                                                <!-- The Modal -->
-                                                <div id="custom-modal-{{ $order->id }}"
-                                                    class="custom-modal hidden p-4" dir="rtl">
+                                                <div id="custom-modal-{{ $order->id }}" class="custom-modal hidden p-4" dir="rtl">
                                                     <div class="custom-modal-content">
                                                         <div class="content-wrapper">
                                                             <span class="custom-close-button">&times;</span>
-
-                                                            <!-- Swiper Slide -->
                                                             @foreach ($order->products as $product)
                                                                 <div class="flex items-center gap-x-2 mb-6 mx-2 mt-2">
-                                                                    <img src="{{ asset('Product_img/' . $product->image) }}"
-                                                                        class="max-w-20 max-h-16 block"
-                                                                        alt="">
+                                                                    <img src="{{ asset('Product_img/' . $product->image) }}" class="max-w-20 max-h-16 block" alt="">
                                                                     <span>{{ $product->title }}</span>
                                                                     <span>
-                                                                        <span class="text-[#C70039]">
-                                                                            السعر :
-                                                                        </span>
+                                                                        <span class="text-[#C70039]"> السعر : </span>
                                                                         {{ $product->price }}
                                                                     </span>
                                                                     <span>
-                                                                        <span class="text-[#C70039]">
-                                                                            الكمية :
-                                                                        </span>
+                                                                        <span class="text-[#C70039]"> الكمية : </span>
                                                                         {{ $product->quantity }}
                                                                     </span>
                                                                 </div>
                                                                 <hr>
                                                             @endforeach
-
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
-
                                         </tbody>
                                     </table>
                                     <div class="mt-4">
                                         {{-- {{ $categories->links() }} --}}
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-
-    <!-- plugins:js -->
     @include('AdminDashboard/include/js')
-
 </body>
 
 </html>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Modal open/close logic
         document.querySelectorAll('.modal-open').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var modalId = this.getAttribute('data-modal-target');
                 var modal = document.querySelector(modalId);
                 if (modal) {
-                    console.log('Opening modal:', modalId);
                     modal.style.display = "block";
-                    document.body.style.overflow = 'hidden'; // Disable scrolling
+                    document.body.style.overflow = 'hidden';
                 } else {
                     console.error('Modal not found:', modalId);
                 }
@@ -220,18 +178,31 @@
                 var modal = this.closest('.custom-modal');
                 if (modal) {
                     modal.style.display = "none";
-                    document.body.style.overflow = ''; // Enable scrolling
+                    document.body.style.overflow = 'auto';
+                } else {
+                    console.error('Modal not found for close button:', this);
                 }
             });
         });
 
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('custom-modal')) {
-                event.target.style.display = "none";
-            }
+        // Search functionality
+        const orderSearchInput = document.getElementById('orderSearchInput');
+        orderSearchInput.addEventListener('input', function() {
+            const searchValue = this.value.trim();
+            const orderRows = document.querySelectorAll('#ordersTableBody tr');
+
+            orderRows.forEach(row => {
+                const orderIdCell = row.querySelector('.order-id');
+                if (orderIdCell && orderIdCell.textContent.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
     });
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

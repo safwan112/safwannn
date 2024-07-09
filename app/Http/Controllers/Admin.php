@@ -105,13 +105,11 @@ class Admin extends Controller
 
     function Order()
     {
-        $orders = ChecOut::get(); // Adjust based on your needs, e.g., filtering by user
-
+        $orders = ChecOut::get(); // Adjust based on your needs, e.g., filtering by user    
         $ordersWithProducts = $orders->map(function ($order) {
             // Parse product IDs and quantities
             $productIds = explode(',', $order->product_id);
-            $quantities = explode(',', $order->quantity);
-
+            $quantities = explode(',', $order->quantity);   
             // Fetch products and attach quantities
             $products = Product::findMany($productIds)->map(function ($product) use (&$quantities, &$productIds) {
                 $index = array_search($product->id, $productIds);

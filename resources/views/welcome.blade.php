@@ -60,11 +60,7 @@
             <div class="top-logo">
                 <img src="{{ asset('/img/logo.png') }}" class="hasTitle" data-title-ar="أبشر" data-title-en="Absher" alt=""  title="" />
             </div>
-            <div class="logos" >
-                <a id="switchLang" class="hasTitle" data-title-ar="English" data-title-en=" العربية" title="" href="javascript: void(0);">
-                    <i class="fa-solid fa-language mt-[0.15rem]"  style="color: #862d42;"></i>
-                    <span class="ar-text" style="color: #862d42 !important">English</span><span style="color: #862d42 !important" class="rtl ar en-text">العربية</span>
-                </a>
+            
 
             </div>
 

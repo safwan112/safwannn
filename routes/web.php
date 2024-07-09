@@ -81,8 +81,9 @@ Route::middleware(['check.expiry'])->group(function () {
 
 
     Route::get('/payment', [PaymentController::class, 'showPaymentForm'])->name('payment.show');
-    Route::post('/payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
+    Route::get('/payment/callback/{order_id?}', [PaymentController::class, 'callback'])->name('payment.callback');
     Route::get('/thanks', [PaymentController::class, 'thanks'])->name('thanks');
+    Route::get('/failed', [PaymentController::class, 'failed'])->name('failed');
     Route::post('/payment', function () {
         return view('payment');
     })->name('payment.page');

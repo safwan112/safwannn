@@ -177,13 +177,13 @@ font-size: x-large;
 
     <div class="flex flex-col items-center justify-center min-h-[40rem]">
             <h2 class="text-center mb-4 md:text-[3rem] text-[2rem] font-bold">
-            شكرا لك لثقتك في متجرنا
+            حدث خطا ما
             </h2>
             <div class="text-center mb-4">
-                <i class="fa-solid fa-circle-check text-[7rem] text-green-500"></i>
+                <i class="fa-solid fa-circle-xmark text-[7rem] text-red-500"></i>
             </div>
             <p class="text-center mb-4 md:text-[3rem] text-[2rem] font-bold">
-               يمكنك مواصلة الشراء من هنا
+            المرجو اعاده المحاوله
             </p>
             <a href="/Home">
                 <button
@@ -223,7 +223,7 @@ font-size: x-large;
             })
 
             Toast.fire({
-                icon: 'success',
+                icon: 'error',
                 title: '{{ session('StoreOrder') }}',
             })
         </script>

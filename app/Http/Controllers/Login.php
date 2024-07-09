@@ -87,7 +87,7 @@ class Login extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('/Home')->with('success', 'تم انشاء حسابك بنجاح !');
+            return redirect()->route('/')->with('success', 'تم انشاء حسابك بنجاح !');
             // Redirect or return response
         } catch (\Exception $e) {
             // Handle other exceptions
@@ -98,7 +98,7 @@ class Login extends Controller
     public function Logout()
     {
         Auth::logout();
-        return redirect('/Home'); // Redirect to your desired page after logout
+        return redirect('/'); // Redirect to your desired page after logout
     }
 
     public function Login(Request $request)

@@ -29,6 +29,70 @@
         // Check for the specific login error session
         var showLoginMenuOnError = @json(session()->has('loginError'))
     </script>
+    <style>
+
+body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: right;
+    background-color: #fff;
+    margin: 0;
+    padding: 0px;
+}
+
+.shipping-method {
+    display: flex;
+    align-items: center;
+    background-color: #eaf6ff;
+    border: 1px solid #00c2ff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 5px;
+    color: #333;
+    font-size: 1em;
+    max-width: 600px; /* Ensures it does not get too wide on large screens */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    justify-content: space-between; /* Ensures proper spacing between elements */
+}
+
+.shipping-method input[type="radio"] {
+    margin-left: 15px;
+    accent-color: #00c2ff;
+    width: 18px;
+    height: 18px;
+}
+
+.shipping-method input[type="radio"]:checked + label {
+    font-weight: bold;
+}
+
+.shipping-method label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.method-description {
+    color: #000;
+    flex-grow: 1; /* Ensures the description takes up available space */
+}
+
+.price {
+    color: #000;
+    font-weight: bold;
+    white-space: nowrap; /* Prevents line breaks in price */
+}
+
+@media (min-width: 768px) {
+    .shipping-method {
+        font-size: 1.2em; /* Adjusts font size for larger screens */
+    }
+}
+
+
+
+    </style>
 
 </head>
 
@@ -136,6 +200,19 @@
                             <span class="mr-2">احفظ هذه المعلومات للمرات القادمة</span>
                         </div>
                     </div>
+                    
+
+                    <h2 class="text-2xl font-bold">
+                         طريقة الشحن
+                    </h2>
+                    <div class="shipping-method">
+        <input type="radio" id="option1" name="shipping" checked>
+        <label for="option1">
+            <span class="method-description">     شحن وتوصيل من خلال صيدليه غيوم</span>
+            <span class="price">SAR 0.00 <span>
+        </label>
+    </div>
+
                     <div class="md:w-1/2 w-full relative lg:px-0 lg:pl-10 px-5 flex flex-col md:gap-1 gap-5">
                         <h2 class="text-2xl font-bold">
                             محتويات السلة

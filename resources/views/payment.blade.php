@@ -53,7 +53,7 @@
         amount: total,
         currency: 'SAR',
         description: 'Order #{{!empty($checkout) ? $checkout['id'] : '0'}}',
-        publishable_api_key: 'pk_test_UCqGb4ctpfVARUKK2Tp8J26nTMAihwfm7dce8ezf',
+        publishable_api_key: 'pk_live_EsKALgxy4HR3P3i5ZUN5KnmyehQeofkFqouGiHdc',
         callback_url: '{{ route('payment.callback', ['order_id' => !empty($checkout) ? $checkout['id'] : '0']) }}',
         methods: ['creditcard']
     });

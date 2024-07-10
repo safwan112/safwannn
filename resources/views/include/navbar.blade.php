@@ -37,10 +37,7 @@
         <!-- Icons for Login, Register, Chat -->
 
         <div class="flex items-center lg:gap-10 gap-1  text-center py-1">
-            <a href="" class="px-3x py-2 rounded lg:block hidden">
-                <i class="fa-solid fa-heart text-xl transform transition-transform hover:scale-125"></i>
-                <p class="text-gray-400">المفضلة</p>
-            </a>
+            
             @if (Auth::check())
                 <a href="#" id="AccountMenuButton" class="px-3 py-2 rounded">
                     <i class="fa-solid fa-user text-xl transform transition-transform hover:scale-125"></i>

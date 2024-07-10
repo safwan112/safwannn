@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(response => response.json())
                 .then(data => {
                     if (!data.isLoggedIn) {
+                        function showRegistrationArea() {
+                            const registrationArea = document.getElementById('loginMenu'); // Adjust the ID based on your actual markup
+                            registrationArea.style.transform = 'translateX(0)';
+                        }
+                        showRegistrationArea();
                         // Handle not logged in
                         target.textContent = originalButtonText; // Restore the original button text
                         const Toast = Swal.mixin({
@@ -66,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 popup: 'colored-toast',
                             },
                             showConfirmButton: false,
-                            timer: 3500,
+                            timer: 1500,
                             timerProgressBar: true,
                         });
 

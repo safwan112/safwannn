@@ -104,9 +104,19 @@
                 @foreach ($ordersWithProducts as $order)
                     <div class="w-full flex justify-between items-center mb-4 sm:mx-6">
                         <h2 class="text-right sm:mx-2 font-bold text-[#862d42]">
-                            الطلبية رقم : {{ $loop->iteration }}
+                            الطلبية رقم : {{ $order->id }}
                         </h2>
-                        
+                        <h2 class="text-right sm:mx-2 font-bold text-[#862d42]">
+    حالتها :
+    @if ($order->status == 'paid')
+        مدفوع
+    @elseif ($order->status == 'pending')
+        قيد الانتظار
+    @else
+        {{ $order->status }}
+    @endif
+</h2>
+
                     </div>
                     <div class="w-full flex justify-between items-center mb-4 sm:mx-6">
                         <h2 dir="rtl" class="text-sm font-bold text-gray-500">
@@ -169,6 +179,8 @@
                         <div class="swiper-button-prev-products"></div>
 
                     </div>
+                    </div>
+                    <hr class="border-t-4 border-black my-8">
                 @endforeach
 
 

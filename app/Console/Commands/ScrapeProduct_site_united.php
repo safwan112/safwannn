@@ -17,6 +17,9 @@ class ScrapeProduct_site_united extends Command
 
     // The console command description.
     protected $description = 'Scrape product categories and subcategories from unitedpharmacy.sa';
+    
+    // Counter for naming images
+    protected $imageCounter = 1;
 
     // Create a new command instance.
     public function __construct()
@@ -97,12 +100,12 @@ class ScrapeProduct_site_united extends Command
 
                                         // Extract product image URL
                                         $productImage = $productNode->filter('div.product-hover a.product-item-photo img.product-image-photo')->attr('data-src');
-
-                                        $image_product_db = last(explode('/', $productImage));
+                                        $image_product_db = $this->imageCounter . '.png';
+                                        $this->imageCounter++; // Increment the counter
+                                        
                                         // تنزيل الصور وحفظها محليًا
                                         $imageContent = file_get_contents($productImage);
-                                        $imageName = basename($productImage);
-                                        $savePath = public_path('Product_img') . DIRECTORY_SEPARATOR . $imageName;
+                                        $savePath = public_path('Product_img') . DIRECTORY_SEPARATOR . $image_product_db;
                                         file_put_contents($savePath, $imageContent);
 
                                         $productPrice = trim($productNode->filter('span.price')->text());

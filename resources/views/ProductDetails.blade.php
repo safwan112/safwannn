@@ -28,6 +28,84 @@
         var showLoginMenuOnError = @json(session()->has('loginError'))
     </script>
     <style>
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #862d42;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2; /* Ensure zoom controls are above the image */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            background: transparent;
+            border: none;
+            color: #862d42;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            transition: transform 0.25s ease;
+        }
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        .fa-whatsapp,
+        .fa-bars {
+            display: none;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+                height: 100%;
+            }
+        }
         /* Loading Spinner CSS */
         .loader {
             border: 8px solid #f3f3f3;
@@ -181,6 +259,21 @@
 
         </div>
 
+
+        <div id="imageModal" class="modal">
+    <span class="close">&times;</span>
+ <!--   <div class="zoom-controls">
+        <button id="zoomIn" class="zoom-btn"><i class="fa fa-plus"></i></button>
+        <button id="zoomOut" class="zoom-btn"><i class="fa fa-minus"></i></button>
+    </div> -->
+    <img class="modal-content" id="modalImg">
+    <div id="caption"></div>
+</div>
+
+
+
+
+
         <div class="product flex flex-col gap-10 bg-[#ededed]">
 
             <div class="flex lg:flex-row flex-col bg-[#ededed]">
@@ -190,12 +283,12 @@
                     <div
                         class="w-full flex lg:flex-row flex-col lg:justify-center justify-start lg:items-start items-center gap-3">
                         <div class="flex justify-center items-center w-[380px] h-[380px]">
-                            @if (strpos($products->image, 'https://') !== false)
-                                <img src="{{ $products->image }}?{{ time() }}" id="bigProductImg" class="max-w-[300px] h-[300px]" alt="{{ $products->name }}" srcset="">
-                            @else
-                                <img src="{{ asset('Product_img/' . $products->image) }}?{{ time() }}" id="bigProductImg" class="max-w-[300px] h-[300px]" alt="{{ $products->name }}" srcset="">
-                            @endif
-                        </div>
+    @if (strpos($products->image, 'https://') !== false)
+        <img src="{{ $products->image }}?{{ time() }}" id="bigProductImg" class="max-w-[300px] h-[300px] cursor-pointer" alt="{{ $products->name }}">
+    @else
+        <img src="{{ asset('Product_img/' . $products->image) }}?{{ time() }}" id="bigProductImg" class="max-w-[300px] h-[300px] cursor-pointer" alt="{{ $products->name }}">
+    @endif
+</div>
 
                     </div>
                 </div>
@@ -317,4 +410,43 @@
         quantityElement.dataset.value = quantity; // Update the data-value attribute
         quantityElement.innerText = quantity; // Update the displayed text
     }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById("imageModal");
+    var img = document.getElementById("bigProductImg");
+    var modalImg = document.getElementById("modalImg");
+    var captionText = document.getElementById("caption");
+    var span = document.getElementsByClassName("close")[0];
+    var zoomInBtn = document.getElementById("zoomIn");
+    var zoomOutBtn = document.getElementById("zoomOut");
+
+    img.onclick = function() {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+        modalImg.style.transform = "scale(0.7)";
+    }
+
+    var scale = 1;
+    zoomInBtn.onclick = function() {
+        scale += 0.1;
+        modalImg.style.transform = "scale(" + scale + ")";
+    }
+
+    zoomOutBtn.onclick = function() {
+        scale = Math.max(0.1, scale - 0.1);
+        modalImg.style.transform = "scale(" + scale + ")";
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const productDescription = document.getElementById('productDescription');
+    if (productDescription.scrollHeight > productDescription.clientHeight) {
+        productDescription.scrollTop = productDescription.scrollHeight;
+    }
+});
 </script>

@@ -49,8 +49,11 @@ class ScrapeProductSite2New extends Command
         $url = 'https://www.asrar-co.com';
         $crawler = $client->request('GET', $url);
 
+        // Image counter starting from 3000
+        $imageCounter = 3000;
+
         // Get all categories and subcategories
-        $crawler->filter('#main-menu > ul > li.menu-item.main-menu-item.multi-level.dropdown.drop-menu')->each(function ($node) use ($client) {
+        $crawler->filter('#main-menu > ul > li.menu-item.main-menu-item.multi-level.dropdown.drop-menu')->each(function ($node) use ($client, &$imageCounter) {
             $categoryName = $node->filter('a > span.links-text')->text();
 
             // Skip the category "العروض"
@@ -63,7 +66,7 @@ class ScrapeProductSite2New extends Command
 
             $dropdownMenu = $node->filter('.dropdown-menu');
             if ($dropdownMenu->count() > 0) {
-                $dropdownMenu->filter('ul.j-menu > li.menu-item')->each(function ($subNode) use ($client, $category) {
+                $dropdownMenu->filter('ul.j-menu > li.menu-item')->each(function ($subNode) use ($client, $category, &$imageCounter) {
                     $subcategoryName = $subNode->filter('a > span.links-text')->text();
                     $subcategoryLink = $subNode->filter('a')->attr('href');
 
@@ -80,7 +83,7 @@ class ScrapeProductSite2New extends Command
                     $this->info("Scraping products from subcategory: $subcategoryName");
 
                     // Get all product details
-                    $subcategoryCrawler->filter('div.product-layout')->each(function ($node) use ($subCategory, $category, $client) {
+                    $subcategoryCrawler->filter('div.product-layout')->each(function ($node) use ($subCategory, $category, $client, &$imageCounter) {
                         $productName = $node->filter('div.name > a')->text();
                         $productLink = $node->filter('div.name > a')->attr('href');
                         $productImage = $node->filter('div.image > a > div > img')->attr('src');
@@ -98,7 +101,7 @@ class ScrapeProductSite2New extends Command
                         // Navigate to the product details page to get the brand name
                         $productDetailsCrawler = $client->request('GET', $productLink);
                         $brandNode = $productDetailsCrawler->filter('div.brand-image.product-manufacturer > a > span');
-                        $brandName = $brandNode->count() ? $brandNode->text() : 'Unknown'; 
+                        $brandName = $brandNode->count() ? $brandNode->text() : 'Unknown';
 
                         // Check for duplicate brand before storing it
                         $brand = Brand::firstOrCreate(['name' => $brandName, 'image' => '']);
@@ -115,9 +118,10 @@ class ScrapeProductSite2New extends Command
                         if (!$existingProduct) {
                             // Download the image and save it locally
                             $imageContent = file_get_contents($productImage);
-                            $imageName = basename($productImage);
+                            $imageName = $imageCounter . '.png';
                             $savePath = public_path('product_img') . DIRECTORY_SEPARATOR . $imageName;
                             File::put($savePath, $imageContent);
+                            $imageCounter++; // Increment the counter
 
                             // Save the product details to the database
                             $product = Product::create([

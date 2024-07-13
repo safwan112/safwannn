@@ -128,17 +128,42 @@
         </div>
 
         <div class="navGategory flex flex-col gap-1 lg:text-md text-sm  p-3 pb-10">
-            @foreach ($categories as $category)
-                <div class="flex items-center justify-between">
-                    {{-- <i class="openSubCategoryBTN fa-solid fa-minus"></i> --}}
+            @php
+                $pharmacyCategory = $categories->firstWhere('name', 'الأدوية');
+                $otherCategories = $categories->where('name', '!=', 'الأدوية');
+            @endphp
 
+            @if($pharmacyCategory)
+                <div class="flex items-center justify-between">
+                    <a href="/Product/{{ $pharmacyCategory->name }}/{{ $pharmacyCategory->id }}"
+                        class="block px-4 py-2 hover:bg-gray-200 font-bold flex">
+                        <span class="border-b border-transparent hover:border-current">
+                            {{ $pharmacyCategory->name }}
+                        </span>
+                    </a>
+                    <i class="OandC_S_Category fa-solid fa-plus cursor-pointer"></i>
+                </div>
+                @if ($pharmacyCategory->subcategories->count())
+                    <ul class="navSubCategory list-disc flex flex-col gap-2 pr-6">
+                        @foreach ($pharmacyCategory->subcategories as $subcategory)
+                            <a href="/SubProduct/{{ $pharmacyCategory->name }}/{{ $subcategory->name }}/{{ $subcategory->id }}"
+                                class="block px-4 py-2 hover:bg-gray-200">
+                                <li>{{ $subcategory->name }}</li>
+                            </a>
+                        @endforeach
+                    </ul>
+                @endif
+                <hr class="my-1">
+            @endif
+
+            @foreach ($otherCategories as $category)
+                <div class="flex items-center justify-between">
                     <a href="/Product/{{ $category->name }}/{{ $category->id }}"
                         class="block px-4 py-2 hover:bg-gray-200 font-bold flex">
                         <span class="border-b border-transparent hover:border-current">
                             {{ $category->name }}
                         </span>
                     </a>
-
                     <i class="OandC_S_Category fa-solid fa-plus cursor-pointer"></i>
                 </div>
                 @if ($category->subcategories->count())

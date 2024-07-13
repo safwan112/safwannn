@@ -100,11 +100,11 @@
 
         {{-- payments method --}}
 
-      <!--  <div class="flex justify-center items-center gap-10 lg:mt-0 mt-6">
+        <div class="flex justify-center items-center gap-10 lg:mt-0 mt-6">
             <a href="">
-                <img src="{{ asset('img/payment_methods/visa.png') }}" alt="" srcset="" class="w-12">
+                <img src="{{ asset('img/payment_methods/1.png') }}" alt="" srcset="" >
             </a>
-            <a href="">
+         <!--   <a href="">
                 <img src="{{ asset('img/payment_methods/masterCard.png') }}" alt="" srcset=""
                     class="w-12">
             </a>

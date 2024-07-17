@@ -85,11 +85,13 @@
                                             </div>
                                             <div class="card-body mr-2" style="text-align: right; width:80%">
                                                 <p class="mb-4">عدد الطلبيات</p>
+                                               <a href="/Admin/Order"> 
                                                 <p class="fs-30 mb-2 font-bold">{{$ordersThisMonthCount}}</p>
-                                                <p>
+                                               <p>
                                                     نتائج
                                                     (30 يوم)
                                                 </p>
+                                            </a> 
                                             </div>
                                         </div>
 

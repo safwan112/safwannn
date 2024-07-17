@@ -90,7 +90,42 @@ body {
     }
 }
 
+/* Your existing styles */
+.discount-code-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 20px;
+        }
 
+        .discount-code-container input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .discount-code-container button {
+            padding: 10px 20px;
+            background-color: #00c2ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .discount-code-container button:hover {
+            background-color: #008bbf;
+        }
+
+        .total-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
 
     </style>
 
@@ -194,6 +229,11 @@ body {
                         <input type="text" name="phone" required
                             class="rounded border border-slate-400 w-full h-[40px] p-2" placeholder="الهاتف"
                             value="{{ Auth::user()->phone }}">
+                            <div class="discount-code-container">
+                <input type="text" id="discount-code" placeholder=" أدخل رمز الخصم">
+                <button type="button" id="apply-discount">تطبيق الخصم</button>
+                <div id="discount-message"></div>
+            </div>
 
                         <div class="flex gap-1">
                             <input type="checkbox" name="save" class="">

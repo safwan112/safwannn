@@ -3,7 +3,16 @@ $(document).ready(function () {
     $('#cart-spinner-overlay').removeClass('hidden');
     var productIds = []; // Initialize an array to store product IDs
     var quantity = []; // Initialize an array to store qte
-});
+    var originalTotal = 0; // Initialize original total price
+    var discountCodes = {
+        'MMD2': 0.15,  
+        'YSR9': 0.15,
+        'SIS4': 0.15,  
+        'RDA3': 0.15,
+        'OSM1': 0.15,
+        'HSR4': 0.15,
+    };
+
     async function fetchCartItems() {
         $.ajax({
             url: '/CheckOut/Items',
@@ -40,17 +49,21 @@ $(document).ready(function () {
                         </div>
                     </div>
                 `;
-
                 });
 
+                originalTotal = total; // Store original total price
+
                 // Append the total price at the end
-                itemsHtml += `<p class="m-5 mx-6 font-bold">المجموع : <span >${total}</span> SAR</p>
+                itemsHtml += `<p class="total-price">السعر الإجمالي: <span id="total-amount">${total.toFixed(2)}</span> SAR</p>
                                 <input type="hidden" value="${productIds}" name='idproducts'>
                                 <input type="hidden" value="${quantity}" name='quantity'>
-                                <input type="hidden" value="${total}" name='total'>
+                                <input type="hidden" id="final-total" value="${total}" name='total'>
                 `;
 
                 $('#cart-items').html(itemsHtml);
+
+                // Update the total price display
+                $('#total-price').text(`SAR ${total.toFixed(2)}`);
 
                 // Hide the spinner after the items are loaded
                 $('#cart-spinner-overlay').addClass('hidden');
@@ -58,5 +71,23 @@ $(document).ready(function () {
         });
     }
 
-    // Fetch cart items every second
-    fetchCartItems();
+    fetchCartItems(); // Fetch cart items initially
+
+    // Handle discount code application
+    $('#apply-discount').click(function () {
+        var discountCode = $('#discount-code').val().trim();
+        var discountMessage = $('#discount-message');
+        var totalAmount = $('#total-amount');
+        var finalTotal = $('#final-total');
+
+        if (discountCodes.hasOwnProperty(discountCode)) {  // Replace 'YOUR_DISCOUNT_CODE' with the actual discount code
+            var discountedTotal = originalTotal * 0.85;  // Apply 15% discount
+            totalAmount.text(discountedTotal.toFixed(2));
+            $('#total-price').text(`SAR ${discountedTotal.toFixed(2)}`);
+            finalTotal.val(discountedTotal.toFixed(2));  // Update hidden input for total
+            discountMessage.text('تم تطبيق الخصم بنجاح!').css('color', 'green');
+        } else {
+            discountMessage.text('رمز الخصم غير صالح').css('color', 'red');
+        }
+    });
+});

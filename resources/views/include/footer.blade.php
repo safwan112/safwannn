@@ -59,13 +59,13 @@
 
         {{-- تطبيقات الموبايل --}}
 
-        <div class="flex flex-col gap-3">
+   <!--      <div class="flex flex-col gap-3">
             <h2 class="font-bold text-lg">تطبيقات الموبايل</h2>
             <div class="flex  gap-3">
                 <a href="https://play.google.com/store/apps/details?id=co.median.android.obrjar">
                     <img src="{{ asset('img/android.png') }}" class="w-36" alt="" srcset="">
                 </a>
-             <!--   <a href="#">
+               <a href="#">
                     <img src="{{ asset('img/ios.png') }}" class="w-36" alt="" srcset="">
                 </a>
                 <a href="#">

@@ -11,6 +11,11 @@ $(document).ready(function () {
         'RDA3': 0.15,
         'OSM1': 0.15,
         'HSR4': 0.15,
+        'HRE': 0.15,
+        'Skkd8': 0.15,
+        'Opens': 0.15,
+        'Lend ': 0.15,
+        'iWork': 0.15,
     };
 
     async function fetchCartItems() {

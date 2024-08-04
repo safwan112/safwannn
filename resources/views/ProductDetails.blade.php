@@ -37,8 +37,8 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9);
-            
+            background-color: white;
+            scrollbar-width: none;
         }
 
         .close {

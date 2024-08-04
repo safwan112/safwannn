@@ -140,7 +140,7 @@
                                                 <i class="fa-solid fa-user text-red-800" style="font-size: 24px;"></i>
                                             </div>
                                             <div class="card-body mr-2" style="text-align: right; width:80%">
-                                                <p class="mb-4">عدد العملاء</p>
+                                                <p class="mb-4">عدد المستخدمين</p>
                                                 <p class="fs-30 mb-2 font-bold">{{$totalUserCount}}</p>
                                                 <p>
                                                     نتائج

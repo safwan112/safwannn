@@ -8,6 +8,85 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @include('AdminDashboard/include/link')
+    <style>
+        
+        /* Media queries for mobile devices */
+        @media (max-width: 767px) {
+    .navbar-brand-wrapper {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-menu-wrapper {
+        width: 100%;
+    }
+
+    .navbar-toggler {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-nav-right {
+        margin-top: 10px;
+    }
+
+    .content-wrapper {
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .table th,
+    .table td {
+        white-space: nowrap;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        border-bottom: 5px solid #000; /* Darker border color for mobile */
+        padding: 10px;
+    }
+
+    .table td {
+        display: flex;
+        justify-content: space-between;
+        text-align: right;
+        border: none;
+    }
+
+    .table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+    }
+
+    .modal-open {
+        width: auto;
+        text-align: center;
+    }
+
+    .custom-modal-content {
+    width: 95%;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    } 
+}
+    </style>
 
 </head>
 
@@ -90,7 +169,6 @@
                                                 <th>الاسم كامل</th>
                                                 <th>العنوان</th>
                                                 <th>المدينة</th>
-                                                <th>الرقم البريدي</th>
                                                 <th>الهاتف</th>
                                                 <th>المنتجات</th>
                                                 <th>مبلغ الطلبية</th>
@@ -101,22 +179,21 @@
                                         </thead>
                                         <tbody id="ordersTableBody">
                                             @foreach ($ordersWithProducts as $order)
-                                                <tr>
-                                                    <td>{{ $order->firstname }} {{ $order->secoundname }}</td>
-                                                    <td>{{ $order->adress }}</td>
-                                                    <td>{{ $order->city }}</td>
-                                                    <td>{{ $order->postalcode }}</td>
-                                                    <td>{{ $order->phone }}</td>
-                                                    <td>
-                                                        <button class="modal-open" data-modal-target="#custom-modal-{{ $order->id }}">
-                                                            <label class="badge badge-success cursor-pointer">مشاهدة</label>
-                                                        </button>
-                                                    </td>
-                                                    <td>{{ $order->price }} SAR</td>
-                                                    <td class="order-id">{{ $order->id }}</td>
-                                                    <td class="order-status {{ $order->status == 'paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">{{ $order->status }}</td>
-                                                    <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-                                                </tr>
+                                            <tr>
+            <td data-label="الاسم كامل">{{ $order->firstname }} {{ $order->secoundname }}</td>
+            <td data-label="العنوان">{{ $order->adress }}</td>
+            <td data-label="المدينة">{{ $order->city }}</td>
+            <td data-label="الهاتف">{{ $order->phone }}</td>
+            <td data-label="المنتجات">
+                <button class="modal-open" data-modal-target="#custom-modal-{{ $order->id }}">
+                    <label class="badge badge-success cursor-pointer">مشاهدة</label>
+                </button>
+            </td>
+            <td data-label="مبلغ الطلبية">{{ $order->price }} SAR</td>
+            <td data-label="رقم الطلب" class="order-id">{{ $order->id }}</td>
+            <td data-label="الحاله" class="order-status {{ $order->status == 'paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">{{ $order->status }}</td>
+            <td data-label="تاريخ الطلب">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+        </tr>
                                                 <div id="custom-modal-{{ $order->id }}" class="custom-modal hidden p-4" dir="rtl">
                                                     <div class="custom-modal-content">
                                                         <div class="content-wrapper">

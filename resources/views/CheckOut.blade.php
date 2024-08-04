@@ -230,7 +230,7 @@ body {
                             class="rounded border border-slate-400 w-full h-[40px] p-2" placeholder="الهاتف"
                             value="{{ Auth::user()->phone }}">
                             <div class="discount-code-container">
-                <input type="text" id="discount-code" placeholder=" أدخل رمز الخصم">
+                <input type="text" name='discountcode' id="discount-code" placeholder=" أدخل رمز الخصم">
                 <button type="button" id="apply-discount">تطبيق الخصم</button>
                 <div id="discount-message"></div>
             </div>

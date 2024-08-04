@@ -18,6 +18,7 @@ class ChecOutController extends Controller
             'secoundname' => 'required',
             'adress' => 'required',
             'city' => 'required',
+            'discountcode' => '',
             'phone' => 'required',
             'idproducts' => 'required',
             'total' => 'required',
@@ -55,6 +56,7 @@ class ChecOutController extends Controller
             $checkout->secoundname = $validated['secoundname'];
             $checkout->adress = $validated['adress'];
             $checkout->city = $validated['city'];
+            $checkout->discountcode = $validated['discountcode'];
             $checkout->phone = $validated['phone'];
             $checkout->quantity = $request->quantity;
             $checkout->status = 'pending'; // Set initial status as pending

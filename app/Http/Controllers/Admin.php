@@ -37,6 +37,20 @@ class Admin extends Controller
                         ->orderBy('search_count', 'desc')
                         ->get();
     
+        // Fetch and group discount codes
+        $discountCodes = DB::table('chec_outs')
+                        ->select('discountcode')
+                        ->whereNotNull('discountcode') // Ensure discount codes are not null
+                        ->where('discountcode', '!=', '') // Ensure discount codes are not empty
+                        ->get()
+                        ->groupBy('discountcode')
+                        ->map(function ($items) {
+                            return $items->count();
+                        })
+                        ->filter(function ($count) {
+                            return $count > 0; // Filter out codes with zero usage
+                        });
+    
         return view('AdminDashboard/AdminDash', compact(
             'ordersThisMonthCount', 
             'topSellingProducts', 
@@ -45,7 +59,8 @@ class Admin extends Controller
             'orderData', 
             'totalUserCount', 
             'salesData',
-            'topSearch' // Pass the top search queries to the view
+            'topSearch', 
+            'discountCodes' // Pass the filtered discount codes to the view
         ));
     }
     

@@ -245,7 +245,35 @@
         </div>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title mb-0">اكتر اكواد الخصم استعمالا</p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-borderless">
+                        <thead>
+                            <tr>
+                                <th>الكود</th>
+                                <th class="flex justify-center items-center">عدد الاستخدامات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($discountCodes as $code => $count)
+                            <tr>
+                                <td class="font-semibold">{{ $code }}</td>
+                                <td class="flex justify-center items-center h-full mt-2">
+                                    <span class="inline-flex items-center py-1.5 px-3 rounded-full text-md bg-teal-500 text-white font-semibold">{{ $count }}</span>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

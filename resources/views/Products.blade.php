@@ -195,7 +195,7 @@
 
             </div>
 
-            <div class="lg:flex  justify-between items-center ml-[1rem]">
+            <div id="old-filters" class="lg:flex  justify-between items-center ml-[1rem]">
 
                 <p class="flex items-center">
                     ترتيب حسب
@@ -253,8 +253,96 @@
             {{-- page title and filer by for small screens --}}
 
             
-        </div>
+        
+        <div id="new-filters" class="lg:flex  justify-between items-center ml-[1rem]">
+    <p class="flex items-center">
+        <span id="filter-label"> ترتيب حسب المرض </span>
+        <select id="sort_by_small_screen" data-category-id="{{ $category_id }}" class="border border-gray-400 rounded mr-4 px-3 py-2 cursor-pointer">
+            <option value="" class="text-center p-4 cursor-pointer">
+                اختر ما تريد
+            </option>
+            <option value="/SubProduct/الأدوية/الفيتامينات والمكملات الغذائية/113" class="text-center p-4 cursor-pointer">
+            الفيتامينات والمكملات الغذائية
+            </option>
+            <option value="/SubProduct/الأدوية/مسكنات الألم/114" class="text-center p-4 cursor-pointer">
+            مسكنات الألم            </option>
+            <option value="/SubProduct/الأدوية/أدوية الكحة و البرد و الزكام/115" class="text-center p-4 cursor-pointer">
+            أدوية الكحة و البرد و الزكام            </option>
+            <option value="/SubProduct/الأدوية/أدوية العين و الأذن/116" class="text-center p-4 cursor-pointer">
+            أدوية العين و الأذن            </option>
+            <option value="/SubProduct/الأدوية/أدوية البواسير/117" class="text-center p-4 cursor-pointer">
+            أدوية البواسير            </option>
+            <option value="/SubProduct/الأدوية/أدوية الفم/118" class="text-center p-4 cursor-pointer">
+            أدوية الفم            </option>
+            <option value="/SubProduct/الأدوية/أدوية الجهاز التناسلى/119" class="text-center p-4 cursor-pointer">
+            أدوية الجهاز التناسلى            </option>
+            <option value="/SubProduct/الأدوية/أدوية المعدة و القولون/121" class="text-center p-4 cursor-pointer">
+            أدوية المعدة و القولون            </option>
+            <option value="/SubProduct/الأدوية/المضادات الحيوية/122" class="text-center p-4 cursor-pointer">
+            المضادات الحيوية            </option>
+            <option value="/SubProduct/الأدوية/أدوية ضغط الدم والقلب/123" class="text-center p-4 cursor-pointer">
+            أدوية ضغط الدم والقلب            </option>
+            <option value="/SubProduct/الأدوية/ادوية السكري/124" class="text-center p-4 cursor-pointer">
+            ادوية السكري            </option>
+            
+            
+        </select>
+    </p>
+</div>
+<div id="loading-spinner" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
 
+        <div class="loader"></div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the category ID from the select element
+    var categoryId = document.getElementById('sort_by_small_screen').dataset.categoryId;
+    
+    // Get the filter sections
+    var oldFilters = document.getElementById('old-filters');
+    var newFilters = document.getElementById('new-filters');
+    
+    // Function to hide or show filters based on category
+    function toggleFilters() {
+        if (categoryId == 6) {  // Assuming 6 is the ID for "الأدوية"
+            oldFilters.classList.add('hidden'); // Hide the old filter section
+            newFilters.classList.remove('hidden'); // Ensure the new filter section is visible
+        } else {
+            oldFilters.classList.remove('hidden'); // Show the old filter section if needed
+            newFilters.classList.add('hidden'); // Hide the new filter section if needed
+        }
+    }
+    
+    // Call the function initially to set the state
+    toggleFilters();
+    
+    // Add event listener for the select element
+    document.getElementById('sort_by_small_screen').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            window.location.href = selectedValue; // Redirect to the selected URL
+        }
+    });
+});
+
+</script>
+<script>
+        document.getElementById('sort_by_small_screen').addEventListener('change', function() {
+            // Show the loading spinner
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            
+            // Simulate fetching data (replace this with your actual data fetching logic)
+            setTimeout(function() {
+                // Hide the loading spinner
+                document.getElementById('loading-spinner').classList.add('hidden');
+                
+                // Update the page with new offers (this part will be your actual logic)
+                console.log('Offers have been loaded');
+            }, 3000); // Simulated delay of 3 seconds
+        });
+    </script>
+</div>
         {{-- product and filters --}}
 
         <div class="flex lg:flex-row flex-col gap-10 lg:justify-start justify-center mx-4 lg:mt-6 mt-0">

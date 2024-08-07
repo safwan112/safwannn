@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function searchProduct() {
     var query = $('#searchInputMobile').val().trim();
 
-    console.log(" query: ", query); // Log the search query
+    console.log("query: ", query); // Log the search query
 
     // Check if the query is empty
     if (query === '') {
@@ -511,7 +511,7 @@ function searchProduct() {
                     let imagePath = basePath + '/' + product.image;
                     html += `
                     <div class="flex justify-between items-center mb-4 transition-transform duration-300 hover:scale-95">
-                        <a href="/ProductDetails/${product.title}/${product.id}" class="flex items-center w-full">
+                        <a href="/ProductDetails/${product.title}/${product.id}" class="product-link flex items-center w-full" data-query="${query}" data-id="${product.id}" data-title="${product.title}">
                             <div class="flex gap-2 items-center w-5/6">
                                 ${product.image.includes('https://')
                                     ? `<img src="${product.image}?${Date.now()}" class="w-20 h-20" alt="${product.title}" loading="lazy" onload="imageLoaded(this)">`
@@ -535,12 +535,41 @@ function searchProduct() {
                 </div>`;
             }
             $('#searchResult').html(html);
+
+            // Attach click event to product links
+            $('.product-link').on('click', function(e) {
+                e.preventDefault();
+                var productLink = $(this);
+                var query = productLink.data('query');
+                var productId = productLink.data('id');
+                var productTitle = productLink.data('title');
+                var href = productLink.attr('href');
+
+                // Save the search query to the database
+                $.ajax({
+                    url: "/saveSearchQuery", // Endpoint to save the search query
+                    method: 'GET',
+                    data: { query: productTitle, id: productId },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Search query saved successfully", response);
+                        // Redirect to the product details page after saving the query
+                        window.location.href = href;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error saving search query: ", status, error);
+                        // Redirect to the product details page even if the query save fails
+                        window.location.href = href;
+                    }
+                });
+            });
         },
         error: function(xhr, status, error) {
             console.error("AJAX error: ", status, error); // Log AJAX error information
         }
     });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SearchController;
 
 
 /*
@@ -88,6 +89,7 @@ Route::middleware(['check.expiry'])->group(function () {
         return view('payment');
     })->name('payment.page');
 
+    Route::get('/saveSearchQuery', [SearchController::class, 'saveSearchQuery']);
 
     Route::match(['get', 'post'], '/ProductDetails/{title}/{id}', [ProductController::class, 'ProductDetails'])->name('ProductDetails');
 

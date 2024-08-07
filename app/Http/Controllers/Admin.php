@@ -17,30 +17,36 @@ use Illuminate\Support\Facades\File;
 class Admin extends Controller
 {
 
-    function Dashboard()
+    public function Dashboard()
     {
         $startOfMonth = Carbon::now()->startOfMonth();
-        // Get the current date and time
         $now = Carbon::now();
-
-        // Query the ChecOut model for the count of orders created from the start of the current month to now
+    
         $ordersThisMonthCount = ChecOut::whereBetween('created_at', [$startOfMonth, $now])->count();
-        // Query the ChecOut model for the sum of prices of orders created from the start of the current month to now
         $sumOfPricesThisMonth = ChecOut::whereBetween('created_at', [$startOfMonth, $now])->sum('price');
-        // Get the total number of products
         $totalProductsCount = Product::count();
-        // Get the total number of user
         $totalUserCount = User::whereNull('is_admin')->count();
-
+    
         $salesData = $this->getWeeklySalesData();
-
         $orderData = $this->getWeeklyOrderData();
-
-        $topSellingProducts = Product::orderBy('sales', 'desc')
-            ->take(5)
-            ->get();
-
-        return view('AdminDashboard/AdminDash', compact('ordersThisMonthCount', 'topSellingProducts', 'sumOfPricesThisMonth', 'totalProductsCount', 'orderData', 'totalUserCount', 'salesData'));
+        $topSellingProducts = Product::orderBy('sales', 'desc')->take(5)->get();
+    
+        // Fetch top search queries
+        $topSearch = DB::table('search_queries')
+                        ->select('query', 'search_count')
+                        ->orderBy('search_count', 'desc')
+                        ->get();
+    
+        return view('AdminDashboard/AdminDash', compact(
+            'ordersThisMonthCount', 
+            'topSellingProducts', 
+            'sumOfPricesThisMonth', 
+            'totalProductsCount', 
+            'orderData', 
+            'totalUserCount', 
+            'salesData',
+            'topSearch' // Pass the top search queries to the view
+        ));
     }
 
     public function getWeeklySalesData()

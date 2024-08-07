@@ -245,6 +245,7 @@
         </div>
     </div>
 </div>
+
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

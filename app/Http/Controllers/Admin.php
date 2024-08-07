@@ -48,6 +48,7 @@ class Admin extends Controller
             'topSearch' // Pass the top search queries to the view
         ));
     }
+    
 
     public function getWeeklySalesData()
     {

@@ -305,16 +305,22 @@
                         {{-- حالة المنتج --}}
 
                         <div class="flex gap-4">
-                            <span class="font-[500]">حالة المنتج :</span>
-                            <span>متوفر</span>
-                        </div>
+    <span class="font-[500]">حالة المنتج :</span>
+    <span style="color: {{ $products->quantity > 0 ? 'green' : 'red' }}; font-size: 19px;"> <!-- Adjust the font-size as needed -->
+        @if($products->quantity > 0)
+            متوفر
+        @else
+            غير متوفر
+        @endif
+    </span>
+</div>
 
-                        <div class="flex gap-4">
-                            <span class="font-[500]">الكمية :</span>
-                            <span>
-                                {{ $products->quantity }}
-                            </span>
-                        </div>
+<div class="flex gap-4">
+    <span class="font-[500]">الكمية :</span>
+    <span style="font-size: 1.25rem;"> <!-- Adjust the font-size as needed -->
+        {{ $products->quantity }}
+    </span>
+</div>
 
                         {{-- price --}}
 
@@ -351,11 +357,7 @@
                             <button data-product-id="{{ $products->id }}"
                                 class="addToCartButton py-3 text-center bg-[#862d42] hover:bg-transparent hover:text-black border hover:border-[#999] border-[#fff] text-white font-bold rounded-full w-[80%] transition-all duration-200">أضف
                                 للسلة</button>
-                            <i
-                                class="fa-regular fa-heart text-3xl cursor-pointer hover:scale-110 transition-all duration-200"></i>
-                            <i
-                                class="fa-solid w-[8%] fa-share-nodes self-center text-3xl cursor-pointer hover:scale-110 transition-all duration-200"></i>
-                        </div>
+                            </div>
                     </div>
 
                 </div>

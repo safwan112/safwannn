@@ -90,6 +90,8 @@ Route::middleware(['check.expiry'])->group(function () {
     })->name('payment.page');
 
     Route::get('/saveSearchQuery', [SearchController::class, 'saveSearchQuery']);
+    Route::post('/admin/update-product-quantity', [ProductController::class, 'updateQuantity'])->name('admin.updateProductQuantity');
+
 
     Route::match(['get', 'post'], '/ProductDetails/{title}/{id}', [ProductController::class, 'ProductDetails'])->name('ProductDetails');
 

@@ -294,6 +294,25 @@ class ProductController extends Controller
 
         return response()->json(['products' => $products]);
     }
+    
+    public function updateQuantity(Request $request)
+    {
+        $request->validate([
+            'product_name' => 'required|string',
+            'quantity' => 'required|integer|min:0',
+        ]);
+    
+        $product = Product::where('title', $request->input('product_name'))->first();
+    
+        if ($product) {
+            $product->quantity = $request->input('quantity');
+            $product->save();
+    
+            return back()->with('success', 'تم تحديث الكمية بنجاح.');
+        } else {
+            return back()->with('error', 'لم يتم العثور على المنتج.');
+        }
+    }
 
 
 }

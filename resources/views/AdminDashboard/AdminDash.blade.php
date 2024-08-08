@@ -11,7 +11,15 @@
     @include('AdminDashboard/include/link')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
+<style>
+    hr{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        border-bottom: 5px solid #000; /* Darker border color for mobile */
+        padding: 10px;
+    }
+</style>
 </head>
 
 
@@ -215,7 +223,7 @@
                             </div>
                         </div>
                     </div>
-
+<hr>
                     <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -245,6 +253,7 @@
         </div>
     </div>
 </div>
+<hr>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -270,6 +279,39 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">تحديث كمية المنتج</h4>
+                <form action="{{ route('admin.updateProductQuantity') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="product_name">اسم المنتج:</label>
+                        <input type="text" name="product_name" id="product_name" class="form-control" placeholder="أدخل اسم المنتج" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">الكمية الجديدة:</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control" placeholder="أدخل الكمية الجديدة" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">تحديث الكمية</button>
+                </form>
+
+                @if(session('success'))
+                    <div class="alert alert-success mt-3">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger mt-3">
+                        {{ session('error') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -313,6 +313,21 @@ class ProductController extends Controller
             return back()->with('error', 'لم يتم العثور على المنتج.');
         }
     }
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('title', 'like', "%$query%")
+            ->get(['title', 'image']) // Fetch necessary fields
+            ->map(function($product) {
+                // Generate full image URL
+                $product->image_url = strpos($product->image, 'https://') !== false 
+                    ? $product->image 
+                    : asset('Product_img/' . $product->image);
+                return $product;
+            });
+    
+        return response()->json($products);
+    }
 
 
 }

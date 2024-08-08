@@ -19,6 +19,24 @@
         border-bottom: 5px solid #000; /* Darker border color for mobile */
         padding: 10px;
     }
+    #product-list {
+        max-height: 300px; /* Adjust this value as needed */
+        overflow-y: auto;
+        position: absolute;
+        z-index: 1000;
+        width: 100%;
+        display: none;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        bottom: 100%; /* Position above the input field */
+        left: 0;
+        transform: translateY(-10px); /* Adjust spacing between the list and input field */
+    }
+    #product-list .list-group-item {
+        padding: 10px;
+        cursor: pointer;
+    }
 </style>
 </head>
 
@@ -292,7 +310,8 @@
                     @csrf
                     <div class="form-group">
                         <label for="product_name">اسم المنتج:</label>
-                        <input type="text" name="product_name" id="product_name" class="form-control" placeholder="أدخل اسم المنتج" required>
+                        <input type="text" id="product_name" name="product_name" class="form-control" placeholder="أدخل اسم المنتج" required>
+                        <ul id="product-list" class="list-group"></ul>
                     </div>
                     <div class="form-group">
                         <label for="quantity">الكمية الجديدة:</label>
@@ -316,6 +335,55 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productNameInput = document.getElementById('product_name');
+        const productList = document.getElementById('product-list');
+
+        productNameInput.addEventListener('input', function() {
+            const query = productNameInput.value;
+
+            if (query.length > 0) {
+                fetch(`/search-products?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        productList.innerHTML = '';
+                        if (data.length > 0) {
+                            productList.style.display = 'block';
+                            data.forEach(product => {
+                                const listItem = document.createElement('li');
+                                listItem.classList.add('list-group-item', 'd-flex', 'align-items-center');
+                                listItem.style.cursor = 'pointer';
+                                listItem.innerHTML = `
+                                    <img src="${product.image_url}" alt="Product Image" style="width: 80px; height: 80px;">
+                                    <span>${product.title}</span>
+                                `;
+                                listItem.addEventListener('click', function() {
+                                    productNameInput.value = product.title;
+                                    productList.style.display = 'none';
+                                });
+                                productList.appendChild(listItem);
+                            });
+                        } else {
+                            productList.style.display = 'none';
+                        }
+                    });
+            } else {
+                productList.style.display = 'none';
+            }
+        });
+
+        // Hide the list if clicked outside
+        document.addEventListener('click', function(e) {
+            if (!productList.contains(e.target) && e.target !== productNameInput) {
+                productList.style.display = 'none';
+            }
+        });
+    });
+</script>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

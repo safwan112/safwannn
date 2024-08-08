@@ -91,6 +91,7 @@ Route::middleware(['check.expiry'])->group(function () {
 
     Route::get('/saveSearchQuery', [SearchController::class, 'saveSearchQuery']);
     Route::post('/admin/update-product-quantity', [ProductController::class, 'updateQuantity'])->name('admin.updateProductQuantity');
+    Route::get('/search-products', [ProductController::class, 'searchProducts'])->name('search.products');
 
 
     Route::match(['get', 'post'], '/ProductDetails/{title}/{id}', [ProductController::class, 'ProductDetails'])->name('ProductDetails');

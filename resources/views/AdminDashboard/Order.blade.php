@@ -86,6 +86,10 @@
     border: 1px solid #888;
     } 
 }
+.postalcode {
+    display: none;
+}
+
     </style>
 
 </head>
@@ -165,35 +169,41 @@
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
-                                            <tr>
+                                        <tr>
                                                 <th>الاسم كامل</th>
                                                 <th>العنوان</th>
                                                 <th>المدينة</th>
+                                                <th class="postalcode">الرقم البريدي</th>
                                                 <th>الهاتف</th>
                                                 <th>المنتجات</th>
                                                 <th>مبلغ الطلبية</th>
                                                 <th>رقم الطلب</th>
                                                 <th>الحاله </th>
                                                 <th>تاريخ الطلب</th>
-                                            </tr>
+                                            </tr>
                                         </thead>
                                         <tbody id="ordersTableBody">
                                             @foreach ($ordersWithProducts as $order)
-                                            <tr>
-            <td data-label="الاسم كامل">{{ $order->firstname }} {{ $order->secoundname }}</td>
-            <td data-label="العنوان">{{ $order->adress }}</td>
-            <td data-label="المدينة">{{ $order->city }}</td>
-            <td data-label="الهاتف">{{ $order->phone }}</td>
-            <td data-label="المنتجات">
-                <button class="modal-open" data-modal-target="#custom-modal-{{ $order->id }}">
-                    <label class="badge badge-success cursor-pointer">مشاهدة</label>
-                </button>
-            </td>
-            <td data-label="مبلغ الطلبية">{{ $order->price }} SAR</td>
-            <td data-label="رقم الطلب" class="order-id">{{ $order->id }}</td>
-            <td data-label="الحاله" class="order-status {{ $order->status == 'paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">{{ $order->status }}</td>
-            <td data-label="تاريخ الطلب">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-        </tr>
+                                            
+        <tr data-order-id="{{ $order->id }}">
+                                                    <td data-label="الاسم كامل">{{ $order->firstname }} {{ $order->secoundname }}</td>
+                                                    <td data-label="العنوان">{{ $order->adress }}</td>
+                                                    <td data-label="المدينة">{{ $order->city }}</td>
+                                                    <td class="postalcode">{{ $order->postalcode }}</td>
+                                                    <td data-label="الهاتف">{{ $order->phone }}</td>
+                                                    <td data-label="المنتجات">
+                                                        <button class="modal-open" data-modal-target="#custom-modal-{{ $order->id }}">
+                                                            <label class="badge badge-success cursor-pointer">مشاهدة</label>
+                                                        </button>
+                                                    </td>
+                                                    <td data-label="مبلغ الطلبية">{{ $order->price }} SAR</td>
+                                                    <td data-label="رقم الطلب" class="order-id">{{ $order->id }}</td>
+                                                    <td data-label="الحاله" class="order-status {{ $order->status == 'paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">{{ $order->status }}</td>
+                                                    <td data-label="تاريخ الطلب">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+                                                    <td>  
+                                                        <button class="btn btn-primary printOrderButton"data-order-id="{{ $order->id }}">طباعة</button>
+                                                 </td>
+                                                </tr>
                                                 <div id="custom-modal-{{ $order->id }}" class="custom-modal hidden p-4" dir="rtl">
                                                     <div class="custom-modal-content">
                                                         <div class="content-wrapper">
@@ -283,72 +293,153 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Document loaded.');
+    console.log('Document loaded.');
 
-        document.querySelectorAll('.saveButton').forEach(button => {
-            console.log('Attaching event listener to button:', button);
-            button.addEventListener('click', function() {
+    // Handle save button clicks
+    document.querySelectorAll('.saveButton').forEach(button => {
+        console.log('Attaching event listener to button:', button);
+        button.addEventListener('click', function() {
+            console.log('Save button clicked.');
+            const categoryId = this.getAttribute('data-category-id');
+            console.log('Category ID:', categoryId);
 
-                console.log('Save button clicked.');
-                const categoryId = this.getAttribute('data-category-id');
-                console.log('Category ID:', categoryId);
+            const modal = document.querySelector('#custom-modal-' + categoryId);
+            const modalContent = modal.querySelector('.content-wrapper');
+            modalContent.classList.add('blur-content');
+            const loader = modal.querySelector('.loader');
+            loader.style.display = 'block';
 
-                const modal = document.querySelector('#custom-modal-' + categoryId);
-                const modalContent = modal.querySelector(
-                    '.content-wrapper'); // Adjust selector as needed
-                modalContent.classList.add('blur-content');
-                const loader = modal.querySelector('.loader');
-                loader.style.display = 'block';
+            const input = document.querySelector('#newName-' + categoryId);
+            console.log('Input value:', input.value);
 
-                const input = document.querySelector('#newName-' + categoryId);
-                console.log('Input value:', input.value);
+            const formData = new FormData();
+            formData.append('name', input.value);
+            formData.append('_token', '{{ csrf_token() }}');
 
-                const formData = new FormData();
-                formData.append('name', input.value);
-                formData.append('_token',
-                    '{{ csrf_token() }}'); // Ensure CSRF token is correct
+            console.log('Attempting to send data to server...');
 
-                console.log('Attempting to send data to server...');
-
-                // Adjust the URL to match your actual update route
-                fetch('CategoryUpdate/' + categoryId, {
-                        method: 'POST',
-                        body: formData,
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                iconColor: 'white',
-                                customClass: {
-                                    popup: 'colored-toast',
-                                },
-                                showConfirmButton: false,
-                                timer: 1500,
-                                timerProgressBar: true,
-                            });
-
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'تم التحديت بنجاح !' // or use data.message if your API returns a specific message
-                            }).then((result) => {
-                                // This function runs after the toast disappears
-                                window.location.reload(); // Refresh the page
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        alert('حدت خطأ مفاجئ !');
+            fetch('CategoryUpdate/' + categoryId, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        iconColor: 'white',
+                        customClass: {
+                            popup: 'colored-toast',
+                        },
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
                     });
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'تم التحديث بنجاح !'
+                    }).then(() => {
+                        window.location.reload(); // Refresh the page
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('حدث خطأ مفاجئ !');
             });
         });
     });
+
+    // Handle print order button clicks
+    document.querySelectorAll('.printOrderButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+            const orderRow = document.querySelector(`tr[data-order-id='${orderId}']`);
+
+            if (!orderRow) {
+                console.error('Order row not found for ID:', orderId);
+                return;
+            }
+
+            const invoiceHeader = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="{{ asset('img/log.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
+                    <h1>فاتورة الطلب</h1>
+                    <p>تاريخ الطباعة: ${new Date().toLocaleDateString()}</p>
+                </div>
+            `;
+
+            const customerName = orderRow.querySelector('td:nth-child(1)').textContent;
+            const customerAddress = orderRow.querySelector('td:nth-child(2)').textContent;
+            const orderPrice = orderRow.querySelector('td:nth-child(7)').textContent;
+            const orderDate = orderRow.querySelector('td:nth-child(10)').textContent;
+
+            const orderDetails = `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>الاسم:</strong> ${customerName}</p>
+                    <p><strong>العنوان:</strong> ${customerAddress}</p>
+                    <p><strong>تاريخ الطلب:</strong> ${orderDate}</p>
+                    <p><strong>مبلغ الطلبية:</strong> ${orderPrice}</p>
+                </div>
+            `;
+
+            let productDetails = "";
+            const products = document.querySelector(`#custom-modal-${orderId} .content-wrapper`).querySelectorAll('.flex.items-center');
+
+            products.forEach(product => {
+                const productImageSrc = product.querySelector('img').getAttribute('src');
+                const productTitle = product.querySelector('span:nth-child(2)').textContent;
+                const productPrice = product.querySelector('span:nth-child(3)').textContent.split(':')[1].trim();
+                const productQuantity = product.querySelector('span:nth-child(4)').textContent.split(':')[1].trim();
+
+                productDetails += `
+                    <tr>
+                        <td><img src="${productImageSrc}" alt="${productTitle}" style="max-width: 50px; max-height: 50px;"></td>
+                        <td>${productTitle}</td>
+                        <td>${productPrice}</td>
+                        <td>${productQuantity}</td>
+                    </tr>
+                `;
+            });
+
+            const productTable = `
+                <table class="table table-hover" style="width: 100%; text-align: right; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>المنتج</th>
+                            <th>السعر</th>
+                            <th>الكمية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${productDetails}
+                    </tbody>
+                </table>
+            `;
+
+            const printContents = `
+                <div style="padding: 20px; font-family: 'Tajawal', sans-serif;">
+                    ${invoiceHeader}
+                    ${orderDetails}
+                    ${productTable}
+                </div>
+            `;
+
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            window.location.reload();
+        });
+    });
+});
+
 </script>

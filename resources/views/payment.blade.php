@@ -55,7 +55,12 @@
         description: 'Order #{{!empty($checkout) ? $checkout['id'] : '0'}}',
         publishable_api_key: 'pk_live_EsKALgxy4HR3P3i5ZUN5KnmyehQeofkFqouGiHdc',
         callback_url: '{{ route('payment.callback', ['order_id' => !empty($checkout) ? $checkout['id'] : '0']) }}',
-        methods: ['creditcard']
+        methods: ['creditcard', 'applepay'],
+        apple_pay: {
+            country: 'SA',
+            label: 'Awesome Cookie Store',
+            validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate',
+        },
     });
 </script>
 

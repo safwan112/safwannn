@@ -99,14 +99,7 @@ class ScrapeProduct_site_united extends Command
                                         $productLink = $productNode->filter('h2.product.name.product-name.product-item-name > a')->attr('href');
 
                                         // Extract product image URL
-                                        $productImage = $productNode->filter('div.product-hover a.product-item-photo img.product-image-photo')->attr('data-src');
-                                        $image_product_db = $this->imageCounter . '.png';
-                                        $this->imageCounter++; // Increment the counter
-                                        
-                                        // تنزيل الصور وحفظها محليًا
-                                        $imageContent = file_get_contents($productImage);
-                                        $savePath = public_path('Product_img') . DIRECTORY_SEPARATOR . $image_product_db;
-                                        file_put_contents($savePath, $imageContent);
+                                       
 
                                         $productPrice = trim($productNode->filter('span.price')->text());
                                         // Convert Arabic numerals to English numerals
@@ -117,20 +110,32 @@ class ScrapeProduct_site_united extends Command
 
                                         $this->info('    - Product: ' . $productName);
                                         $this->info('      Link: ' . $productLink);
-                                        $this->info('      Image: ' . $savePath);
+                                        
                                         $this->info('      Price: ' . $numericPrice);
 
 
                                         // Visit product page to get the description
                                         $productDescription = null;
+                                        $savePath = '';
                                         $retryCount = 0;
 
                                         while ($retryCount < $maxRetries) {
                                             try {
                                                 $productHtml = $client->request('GET', $productLink)->html();
+                                                
                                                 $productCrawler = new Crawler($productHtml);
+                        
                                                 $productDescriptionNode = $productCrawler->filter('#maincontent > div.columns > div > div.product-info-main > div.product.attribute.overview > div > p');
+ $productImage = $productCrawler->filter('.gallery-placeholder__image')->attr('src');
 
+
+                                        $image_product_db = $this->imageCounter . '.png';
+                                        $this->imageCounter++; // Increment the counter
+                                        
+                                        // تنزيل الصور وحفظها محليًا
+                                        $imageContent = file_get_contents($productImage);
+                                        $savePath = public_path('Product_img') . DIRECTORY_SEPARATOR . $image_product_db;
+                                        file_put_contents($savePath, $imageContent);
                                                 if ($productDescriptionNode->count() > 0) {
                                                     $productDescription = $productDescriptionNode->text();
                                                 }
@@ -153,7 +158,7 @@ class ScrapeProduct_site_united extends Command
 
 
                                         $this->info('      Description: ' . $productDescription);
-
+$this->info('      Image: ' . $savePath);
                                         if (!$existingProduct) {
                                             // Save the product details to the database
                                             Product::create([
